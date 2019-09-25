@@ -3,6 +3,7 @@ const express = require("express"),
     path = require("path"),
     mongoose = require("mongoose"),
     session = require('express-session'),
+    hbs = require("hbs"),
     db_url = "mongodb://localhost/express_hbs",
     port = 5000,
     AuthRoutes = require("./app/routes/auth"),
@@ -12,6 +13,12 @@ const express = require("express"),
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
+hbs.registerHelper("inc", (value) => parseInt(value) + 1)
+hbs.registerHelper("dec", (value) => {
+    if (parseInt(value) > 0) return parseInt(value) - 1
+    else return parseInt(value)
+})
+
 mongoose.connect(`${db_url}`, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true },
     err => err ? console.error("Error while connecting to database", err) : console.info("Database Connected Succesfully")
 );
@@ -36,8 +43,5 @@ app.use("/user", isAuthenticated, UserRoutes);
         }
     })
 })()
-
-
-app.get("/", (req, res) => { res.render("index"); });
 
 app.listen(port, () => console.info(`Server is running on Port number ${port}`))

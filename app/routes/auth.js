@@ -10,7 +10,7 @@ router.post("/signup/:role", (req, res) => {
             else if (err) res.render("signin", { error: err.message })
             else {
                 req.session.token = token;
-                res.redirect("http://localhost:5000/auth/notes");
+                res.redirect("http://localhost:5000/auth/notes/0");
             }
         });
     } else res.render("signin", { error: "Missing body" })
@@ -21,23 +21,23 @@ router.post("/signin", (req, res) => {
             if (err) res.render("signin", { signin: true, error: err.message })
             else {
                 req.session.token = token;
-                res.redirect("http://localhost:5000/auth/notes")
+                res.redirect("http://localhost:5000/auth/notes/0")
             }
         })
     } else res.render("signin", { signin: true, error: "Missing body" })
 });
 
 
-router.get("/notes", (req, res) => NoteController.fetchNotes({ flag: "public" }).then(notes => res.render("index", { notes, token: req.session.token })));
+router.get("/notes/:pagenumber", (req, res) => NoteController.fetchNotes({ flag: "public" }).limit(5).skip(5 * req.params.pagenumber).then(notes => res.render("index", { notes, token: req.session.token, page: req.params.pagenumber })));
 
 router.get("/signin", (req, res) => res.render("signin", { signin: true }))
 router.get("/signup", (req, res) => res.render("signin"))
 
 router.get("/signout", (req, res) => {
     delete req.session.token;
-    res.redirect("http://localhost:5000/auth/notes");
+    res.redirect("http://localhost:5000/auth/notes/0");
 });
 router.get("/createnote", (req, res) => {
     if (req.session.token) res.render("notes")
-    else res.redirect("http://localhost:5000/auth/notes")
+    else res.redirect("http://localhost:5000/auth/notes/0")
 });

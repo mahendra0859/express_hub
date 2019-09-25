@@ -12,7 +12,7 @@
 
 <body>
     <div class="m-4">
-        <a href="http://localhost:5000/auth/notes">Home</a>
+        <a href="http://localhost:5000/auth/notes/0">Home</a>
     </div>
     {{#if signin}}
     <h1 class="text-center">Login Form</h1>
@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
                     <input type="password" class="form-control" name="password" id="exampleInputPassword1"
-                        placeholder="Password" required>
+                        placeholder="Enter password" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button><br /><br />
                 {{#if signin}}

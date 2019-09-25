@@ -32,9 +32,10 @@ module.exports = {
     isAuthenticated: (req, res, next) => {
         if (req.session && req.session.token) {
             jwt.verify(req.session.token, `${SECRET}`, (err, payload) => {
-                err ? res.status(403).send({ success: false, message: err.message }) : UserModel.findById(payload.id)
+                err ? res.status(403).send({ success: false, message: err.message }) : UserModel.findById(payload.id).populate({ path: "notes", populate: { path: "images", select: "name" } })
                     .then(user => {
                         if (user) {
+                            console.log("user", user)
                             req.user = user;
                             next();
                         } else res.status(404).send({ success: false, message: "User not found" })

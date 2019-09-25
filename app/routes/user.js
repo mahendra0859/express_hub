@@ -32,7 +32,10 @@ const upload = multer({
     }
 });
 
-router.get("/", (req, res) => res.status(200).send({ success: true, message: "User profile", result: req.user }))
+router.get("/posts", (req, res) => res.render("index", { notes: req.user.notes, token: req.session.token }))
+router.get("/posts/:flag", (req, res) => {
+    NotesController.fetchNotes({ flag: req.params.flag, user: req.user.id }).then(notes => res.render("index", { notes, token: req.session.token }))
+})
 
 router.post("/notes", upload.any(), async (req, res) => {
     const { title, description, flag } = req.body;
@@ -47,8 +50,8 @@ router.post("/notes", upload.any(), async (req, res) => {
         NotesController.addNote({ title, description, flag, images, user: req.user.id }).then(note => {
             UserController.updateUserById(req.user.id, { $addToSet: { notes: note.id } }, (err, user) => {
                 if (err) res.render("notes", { error: err.message })
-                else res.redirect("http://localhost:5000/auth/notes");
+                else res.redirect("http://localhost:5000/auth/notes/0");
             })
-        }).catch(err => res.status(500).send({ success: false, message: err.message }))
-    } else res.status(400).send({ success: false, message: "Missing body" });
+        }).catch(err => res.render("notes", { error: err.message }))
+    } else res.render("notes", { error: "Missing body" })
 });

@@ -15,17 +15,20 @@
         <div class="d-flex align-items-center justify-content-center">
             <h1 class="text-center text-success flex-fill ">List of notes</h1>
             {{#if token}}
+            {{log token}}
             <a href="http://localhost:5000/auth/signout" class="float-right">Sign Out</a>
             {{else}}
             <a href="http://localhost:5000/auth/signin" class="float-right">Sign In</a>
             {{/if}}
         </div><br />
         {{#if token}}
-        <div>
-            <a href="http://localhost:5000/auth/createnote">Create a new note</a>
-            <a href="http://localhost:5000/auth/createnote">User public notes</a>
-            <a href="http://localhost:5000/auth/createnote">User private notes</a>
-        </div><br />
+        <ul class="d-flex">
+            <li class="mr-4"><a href="http://localhost:5000/auth/notes/0">All public notes</a></li>
+            <li class="mr-4"><a href="http://localhost:5000/auth/createnote">Create a new note</a></li>
+            <li class="mr-4"><a href="http://localhost:5000/user/posts">User notes</a></li>
+            <li class="mr-4"><a href="http://localhost:5000/user/posts/public">User public notes</a></li>
+            <li><a href="http://localhost:5000/user/posts/private">User private notes</a></li>
+        </ul><br />
         {{/if}}
         <div class="d-flex">
             {{#if notes}}
@@ -48,6 +51,25 @@
             </div>
             {{/if}}
         </div>
+        {{#if page}}
+        <nav aria-label="Page navigation example" class="mt-4 d-flex justify-content-center">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="http://localhost:5000/auth/notes/{{dec page}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link">{{page}}</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="http://localhost:5000/auth/notes/{{inc page}}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        {{/if}}
     </div>
 </body>
 
