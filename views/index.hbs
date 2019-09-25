@@ -11,7 +11,43 @@
 </head>
 
 <body>
-    <h1 class="text-center text-primary">Welcome to ExpressJs - HandleBars App</h1>
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-center">
+            <h1 class="text-center text-success flex-fill ">List of notes</h1>
+            {{#if token}}
+            <a href="http://localhost:5000/auth/signout" class="float-right">Sign Out</a>
+            {{else}}
+            <a href="http://localhost:5000/auth/signin" class="float-right">Sign In</a>
+            {{/if}}
+        </div><br />
+        {{#if token}}
+        <div>
+            <a href="http://localhost:5000/auth/createnote">Create a new note</a>
+            <a href="http://localhost:5000/auth/createnote">User public notes</a>
+            <a href="http://localhost:5000/auth/createnote">User private notes</a>
+        </div><br />
+        {{/if}}
+        <div class="d-flex">
+            {{#if notes}}
+            {{#each notes}}
+            <div class="card mx-2" style="width: 18rem;">
+                {{#each this.images}}
+                {{!-- {{log this.image}} --}}
+                <img src="http://{{this.image}}" class="card-img-top" alt="..." height="200" width="280">
+                {{/each}}
+                <div class="card-body">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <p class="card-text">{{this.description}}</p>
+                </div>
+            </div>
+            {{/each}}
+            {{else}}
+            <div class="text-center flex-fill">
+                <h4 class="text-danger">No notes found</h4>
+            </div>
+            {{/if}}
+        </div>
+    </div>
 </body>
 
 </html>

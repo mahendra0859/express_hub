@@ -1,17 +1,43 @@
 const router = require("express").Router(),
-    UserController = require("../controller/user");
+    UserController = require("../controller/user"),
+    NoteController = require("../controller/notes");
 module.exports = router;
-
 
 router.post("/signup/:role", (req, res) => {
     if (req.body.username && req.body.password && req.params.role === "user") {
-        UserController.addUser(req.body, req.params.role).then(user => res.status(200).send({ success: true, message: "Signed up successfully", result: user }))
-            .catch(err => res.status(500).send({ success: false, message: err.message }));
-    } else res.status(400).send({ success: false, message: "Missing body" })
+        UserController.addUser(req.body, req.params.role, (err, token) => {
+            if (err && err.code === 11000) res.render("signin", { signin: true, error: "User already exists!" })
+            else if (err) res.render("signin", { error: err.message })
+            else {
+                req.session.token = token;
+                res.redirect("http://localhost:5000/auth/notes");
+            }
+        });
+    } else res.render("signin", { error: "Missing body" })
 });
 router.post("/signin", (req, res) => {
     if (req.body.username && req.body.password) {
-        UserController.loginUser(req.body, (err, token) => err ? res.status(500).send({ success: false, message: err.message }) : res.status(200).send({ success: true, message: "Authenticated successfully", result: token }))
-    } else res.status(400).send({ success: false, message: "Missing body" })
+        UserController.loginUser(req.body, (err, token) => {
+            if (err) res.render("signin", { signin: true, error: err.message })
+            else {
+                req.session.token = token;
+                res.redirect("http://localhost:5000/auth/notes")
+            }
+        })
+    } else res.render("signin", { signin: true, error: "Missing body" })
 });
 
+
+router.get("/notes", (req, res) => NoteController.fetchNotes({ flag: "public" }).then(notes => res.render("index", { notes, token: req.session.token })));
+
+router.get("/signin", (req, res) => res.render("signin", { signin: true }))
+router.get("/signup", (req, res) => res.render("signin"))
+
+router.get("/signout", (req, res) => {
+    delete req.session.token;
+    res.redirect("http://localhost:5000/auth/notes");
+});
+router.get("/createnote", (req, res) => {
+    if (req.session.token) res.render("notes")
+    else res.redirect("http://localhost:5000/auth/notes")
+});

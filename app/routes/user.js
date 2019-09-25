@@ -39,8 +39,9 @@ router.post("/notes", upload.any(), async (req, res) => {
     if (title && description && (flag === "public" || flag === "private") && req.files.length) {
         const images = [];
         for (let index = 0; index < req.files.length; index++) {
-            const image = await ImageModel.create({ image: fs.readFileSync(req.files[index].path), contentType: req.files[index].mimetype })
-            fs.unlinkSync(req.files[index].path);
+            // const image = await ImageModel.create({ image: fs.readFileSync(req.files[index].path), contentType: req.files[index].mimetype })
+            const image = await ImageModel.create({ image: `${req.headers.host}/${req.files[index].path}`, contentType: req.files[index].mimetype })
+            // fs.unlinkSync(req.files[index].path);
             images.push(image.id);
         }
         NotesController.addNote({ title, description, flag, images, user: req.user.id }).then(note => {
