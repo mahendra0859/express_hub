@@ -33,7 +33,8 @@
             <div class="card mx-2" style="width: 18rem;">
                 {{#each this.images}}
                 {{!-- {{log this.image}} --}}
-                <img src="http://{{this.image}}" class="card-img-top" alt="..." height="200" width="280">
+                {{!-- <img src="http://{{this.image}}" class="card-img-top" alt="..." height="200" width="280"> --}}
+                <img src={{this.name}} class="card-img-top" alt="..." height="200" width="280">
                 {{/each}}
                 <div class="card-body">
                     <h5 class="card-title">{{this.title}}</h5>

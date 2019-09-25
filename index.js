@@ -2,7 +2,6 @@ const express = require("express"),
     app = express(),
     path = require("path"),
     mongoose = require("mongoose"),
-    morgan = require("morgan"),
     session = require('express-session'),
     db_url = "mongodb://localhost/express_hbs",
     port = 5000,
@@ -22,7 +21,7 @@ app.use(session({
     secret: 'MySecret', resave: true,
     saveUninitialized: true
 }));
-app.use(morgan('(:date[clf]) -> ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms'));
+
 app.use('/uploads', express.static('uploads'));
 
 app.use("/auth", AuthRoutes);

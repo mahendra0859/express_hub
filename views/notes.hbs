@@ -42,14 +42,13 @@
         <div class="form-group">
             <input type="file" name="image2" class="form-control-file" id="exampleFormControlFile2">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button><br /><br />
-        {{#if signup}}
-        <a href="http://localhost:5000/auth/signin">Already have an account ?</a>
-        {{/if}}
-        {{#if signin}}
-        <a href="http://localhost:5000/auth/signup">Don't have an account ?</a>
-        {{/if}}
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    {{#if error}}
+    <div class="alert alert-danger" role="alert" style="position: fixed;bottom:10px;right:10px">
+        {{error}}
+    </div>
+    {{/if}}
 </body>
 
 </html>

@@ -39,15 +39,15 @@ router.post("/notes", upload.any(), async (req, res) => {
     if (title && description && (flag === "public" || flag === "private") && req.files.length) {
         const images = [];
         for (let index = 0; index < req.files.length; index++) {
-            // const image = await ImageModel.create({ image: fs.readFileSync(req.files[index].path), contentType: req.files[index].mimetype })
-            const image = await ImageModel.create({ image: `${req.headers.host}/${req.files[index].path}`, contentType: req.files[index].mimetype })
-            // fs.unlinkSync(req.files[index].path);
+            const image = await ImageModel.create({ image: fs.readFileSync(req.files[index].path), contentType: req.files[index].mimetype })
+            // const image = await ImageModel.create({ image: `${req.headers.host}/${req.files[index].path}`, contentType: req.files[index].mimetype })
+            fs.unlinkSync(req.files[index].path);
             images.push(image.id);
         }
         NotesController.addNote({ title, description, flag, images, user: req.user.id }).then(note => {
             UserController.updateUserById(req.user.id, { $addToSet: { notes: note.id } }, (err, user) => {
-                if (err) res.status(500).send({ success: false, message: err.message })
-                else res.status(200).send({ success: true, message: "Note created", result: note });
+                if (err) res.render("notes", { error: err.message })
+                else res.redirect("http://localhost:5000/auth/notes");
             })
         }).catch(err => res.status(500).send({ success: false, message: err.message }))
     } else res.status(400).send({ success: false, message: "Missing body" });
