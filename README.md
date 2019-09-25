@@ -2,7 +2,7 @@
 
 ### npm install
 ### npm start
+### http://localhost:5000/auth/notes/1
 
 
-# Postman API Documentation link
-### https://documenter.getpostman.com/view/3782712/SVn2Nvk8
+![](https://media.giphy.com/media/L3Ju6OA1EHB5v6PS6D/giphy.gif)

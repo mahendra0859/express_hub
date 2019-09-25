@@ -13,9 +13,12 @@ const express = require("express"),
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
-hbs.registerHelper("inc", (value) => parseInt(value) + 1)
+hbs.registerHelper("inc", (value, notes) => {
+    if (notes.length == 4) return parseInt(value) + 1
+    else return parseInt(value)
+})
 hbs.registerHelper("dec", (value) => {
-    if (parseInt(value) > 0) return parseInt(value) - 1
+    if (parseInt(value) > 1) return parseInt(value) - 1
     else return parseInt(value)
 })
 

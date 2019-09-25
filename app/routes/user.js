@@ -50,7 +50,7 @@ router.post("/notes", upload.any(), async (req, res) => {
         NotesController.addNote({ title, description, flag, images, user: req.user.id }).then(note => {
             UserController.updateUserById(req.user.id, { $addToSet: { notes: note.id } }, (err, user) => {
                 if (err) res.render("notes", { error: err.message })
-                else res.redirect("http://localhost:5000/auth/notes/0");
+                else res.redirect("http://localhost:5000/auth/notes/1");
             })
         }).catch(err => res.render("notes", { error: err.message }))
     } else res.render("notes", { error: "Missing body" })

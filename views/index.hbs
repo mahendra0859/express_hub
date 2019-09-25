@@ -13,9 +13,9 @@
 <body>
     <div class="container">
         <div class="d-flex align-items-center justify-content-center">
+            <a href="http://localhost:5000/auth/notes/1">Home</a>
             <h1 class="text-center text-success flex-fill ">List of notes</h1>
             {{#if token}}
-            {{log token}}
             <a href="http://localhost:5000/auth/signout" class="float-right">Sign Out</a>
             {{else}}
             <a href="http://localhost:5000/auth/signin" class="float-right">Sign In</a>
@@ -23,19 +23,29 @@
         </div><br />
         {{#if token}}
         <ul class="d-flex">
-            <li class="mr-4"><a href="http://localhost:5000/auth/notes/0">All public notes</a></li>
+            <li class="mr-4"><a href="http://localhost:5000/auth/notes/1">All public notes</a></li>
             <li class="mr-4"><a href="http://localhost:5000/auth/createnote">Create a new note</a></li>
             <li class="mr-4"><a href="http://localhost:5000/user/posts">User notes</a></li>
             <li class="mr-4"><a href="http://localhost:5000/user/posts/public">User public notes</a></li>
             <li><a href="http://localhost:5000/user/posts/private">User private notes</a></li>
         </ul><br />
         {{/if}}
-        <div class="d-flex">
+        {{#if page}}
+        {{#if notes}}
+        <form class="w-25 my-2 d-flex align-items-center" method="GET" action="/auth/search/notes/1">
+            <div class="form-group mb-0 mr-2">
+                <input type="text" class="form-control" name="title" id="exampleInputEmail1"
+                    aria-describedby="emailHelp" placeholder="Enter title">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        {{/if}}
+        {{/if}}
+        <div class="d-flex flex-wrap">
             {{#if notes}}
             {{#each notes}}
-            <div class="card mx-2" style="width: 18rem;">
+            <div class="card m-2" style="width: 16rem;">
                 {{#each this.images}}
-                {{!-- {{log this.image}} --}}
                 {{!-- <img src="http://{{this.image}}" class="card-img-top" alt="..." height="200" width="280"> --}}
                 <img src={{this.name}} class="card-img-top" alt="..." height="200" width="280">
                 {{/each}}
@@ -51,6 +61,7 @@
             </div>
             {{/if}}
         </div>
+        {{#if notes}}
         {{#if page}}
         <nav aria-label="Page navigation example" class="mt-4 d-flex justify-content-center">
             <ul class="pagination">
@@ -62,13 +73,14 @@
                 </li>
                 <li class="page-item"><a class="page-link">{{page}}</a></li>
                 <li class="page-item">
-                    <a class="page-link" href="http://localhost:5000/auth/notes/{{inc page}}" aria-label="Next">
+                    <a class="page-link" href="http://localhost:5000/auth/notes/{{inc page notes}}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                         <span class="sr-only">Next</span>
                     </a>
                 </li>
             </ul>
         </nav>
+        {{/if}}
         {{/if}}
     </div>
 </body>
