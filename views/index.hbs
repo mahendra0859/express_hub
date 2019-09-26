@@ -63,6 +63,7 @@
                         </div>
                         {{/each}}
                     </div>
+                    {{#if (showCarouselControl this.images.length)}}
                     <a class="carousel-control-prev" href="#carouselExampleControls-{{this._id}}" role="button"
                         data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -73,6 +74,7 @@
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="sr-only">Next</span>
                     </a>
+                    {{/if}}
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{this.title}}</h5>

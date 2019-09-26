@@ -17,14 +17,17 @@ hbs.registerHelper("inc", (value, notes) => {
     if (notes.length == 4) return parseInt(value) + 1
     else return parseInt(value)
 });
-hbs.registerHelper("dec", (value) => {
+hbs.registerHelper("dec", value => {
     if (parseInt(value) > 1) return parseInt(value) - 1
     else return parseInt(value)
 });
-hbs.registerHelper("activeClass", (index) => {
-    if(index === 0) {
-        return "active"
-    } else return ""
+hbs.registerHelper("activeClass", index => {
+    if (index === 0) return "active"
+    else return ""
+})
+hbs.registerHelper("showCarouselControl", length => {
+    if (length === 1) return false
+    else return true
 })
 mongoose.connect(`${db_url}`, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true },
     err => err ? console.error("Error while connecting to database", err) : console.info("Database Connected Succesfully")

@@ -28,7 +28,7 @@ router.post("/signin", (req, res) => {
 });
 
 
-router.get("/notes/:pagenumber", (req, res) => NoteController.fetchNotes({ flag: "public" }).limit(4).skip(5 * (req.params.pagenumber - 1)).then(notes => res.render("index", { notes, token: req.session.token, page: req.params.pagenumber })));
+router.get("/notes/:pagenumber", (req, res) => NoteController.fetchNotes({ flag: "public" }).limit(4).skip(4 * (req.params.pagenumber - 1)).then(notes => res.render("index", { notes, token: req.session.token, page: req.params.pagenumber })));
 router.get("/search/notes/:pagenumber", (req, res) => {
     NoteController.fetchNotes({ flag: "public", title: new RegExp(req.query.title, 'i') })
         .then(notes => res.render("index", { notes, token: req.session.token }))
